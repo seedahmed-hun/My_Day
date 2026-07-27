@@ -95,7 +95,7 @@ class _Home extends State<Home> {
               const SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 value: selectedType,
-                items: ['Working', 'Reading', 'Personally'].map((e) {
+                items: ['Work', 'Reading', 'Personally'].map((e) {
                   return DropdownMenuItem<String>(value: e, child: Text(e));
                 }).toList(),
                 onChanged: (val) {

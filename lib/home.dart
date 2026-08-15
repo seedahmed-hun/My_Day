@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:uuid/uuid.dart';
 import 'package:first_app/Task.dart';
 
@@ -144,32 +145,44 @@ class _Home extends State<Home> {
                 itemCount: tasks.length,
                 itemBuilder: (context, index) {
                   final task = tasks[index];
-                  return Card(
-                    child: ListTile(
-                      leading: IconButton(
-                        onPressed: () => toggleTask(index),
-                        icon: Icon(
+                  return Dismissible(
+                    key: Key(task.id),
+                    background: Container(
+                      color: Colors.red,
+                      child: Icon(Icons.delete, color: Colors.white),
+                    ),
+                    onDismissed: (DismissDirection direction) {
+                      setState(() {
+                        tasks.removeAt(index);
+                      });
+                    },
+                    child: Card(
+                      child: ListTile(
+                        leading: IconButton(
+                          onPressed: () => toggleTask(index),
+                          icon: Icon(
+                            task.isDone
+                                ? Icons.check_circle
+                                : Icons.circle_outlined,
+                            color: task.isDone ? Colors.green : Colors.grey,
+                            size: 20,
+                          ),
+                        ),
+                        title: Text(
+                          task.title,
+                          style: TextStyle(
+                            decoration: task.isDone
+                                ? TextDecoration.lineThrough
+                                : null,
+                          ),
+                        ),
+                        subtitle: Text(task.type),
+                        trailing: Icon(
                           task.isDone
                               ? Icons.check_circle
                               : Icons.circle_outlined,
                           color: task.isDone ? Colors.green : Colors.grey,
-                          size: 20,
                         ),
-                      ),
-                      title: Text(
-                        task.title,
-                        style: TextStyle(
-                          decoration: task.isDone
-                              ? TextDecoration.lineThrough
-                              : null,
-                        ),
-                      ),
-                      subtitle: Text(task.type),
-                      trailing: Icon(
-                        task.isDone
-                            ? Icons.check_circle
-                            : Icons.circle_outlined,
-                        color: task.isDone ? Colors.green : Colors.grey,
                       ),
                     ),
                   );
